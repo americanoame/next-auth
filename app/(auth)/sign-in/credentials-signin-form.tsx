@@ -6,14 +6,14 @@ import { Label } from "@/components/ui/label";
 import { signInDefaultValues } from "@/lib/constants";
 import Link from "next/link";
 
-import { useActionState } from "react";  // Manages form submission state
+import { useActionState } from "react"; // Manages form submission state
 import { useFormStatus } from "react-dom"; // Tracks form status (pending)
 import { signInWithCredentials } from "@/lib/actions/user.actions"; // Function to handle sign-in
 
 import { useSearchParams } from "next/navigation"; // Retrieves query parameters from the URL
 
-
-const CredentialsSignInForm = () => {  // Defines the sign-in form component
+const CredentialsSignInForm = () => {
+  // Defines the sign-in form component
 
   // useActionState stores sign-in result (success & message)
   // useActionState stores sign-in result (success & message)
@@ -26,12 +26,10 @@ const CredentialsSignInForm = () => {  // Defines the sign-in form component
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
 
-
   const SignInButton = () => {
     // Checks if the form is pending (useFormStatus)
     const { pending } = useFormStatus();
     return (
-
       // Disables the button while signing in
       <Button disabled={pending} className="w-full" variant="default">
         {pending ? "Signing In..." : "Sign In"}
@@ -42,11 +40,10 @@ const CredentialsSignInForm = () => {  // Defines the sign-in form component
   return (
     // Submits form using action (calls signInWithCredentials)
     <form action={action}>
-    
-    <input type='hidden' name='callbackUrl' value={callbackUrl} />
+      <input type="hidden" name="callbackUrl" value={callbackUrl} />
 
-      <div className="space-y-6">
-        <div>
+      <div className="space-y-6 ">
+        <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
           <Input
             id="email"
@@ -57,7 +54,7 @@ const CredentialsSignInForm = () => {  // Defines the sign-in form component
             autoComplete="email"
           />
         </div>
-        <div>
+        <div className="space-y-2">
           <Label htmlFor="password">Password</Label>
           <Input
             id="password"
