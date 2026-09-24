@@ -13,13 +13,7 @@ async function main() {
   await prisma.verificationToken.deleteMany();
   await prisma.user.deleteMany();
 
-  // 👈 added cleanup for course-related tables
-  await prisma.stroke.deleteMany();
-  await prisma.round.deleteMany();
-  await prisma.hole.deleteMany();
-  await prisma.course.deleteMany();
-  // 👆 end added
-  
+
 
 
   await prisma.user.createMany({ data: sampleData.users });
