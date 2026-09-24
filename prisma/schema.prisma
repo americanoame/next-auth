@@ -25,7 +25,7 @@ model User {
   account       Account[]
   session       Session[]
 
-  Round Round[]
+ 
 }
 
 model Account {
@@ -65,68 +65,6 @@ model VerificationToken {
   expires    DateTime
 
   @@id([identifier, token])
-}
-
-
-
-/// ----------------------------
-/// Golf Models
-/// ----------------------------
-
-model Course {
-  id        String   @id @default(cuid())
-  name      String
-  city      String
-  state     String
-  holes     Int
-  par       Int
-  createdAt DateTime @default(now())
-
-  rounds    Round[]
-  holesInfo Hole[]
-}
-
-model Hole {
-  id        String   @id @default(cuid())
-  number    Int
-  par       Int
-  courseId  String
-  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
-
-  strokes   Stroke[]
-
-  /// Ensure each hole number is unique per course
-  @@unique([courseId, number], name: "hole_number_per_course_unique")
-}
-
-model Round {
-  id        String   @id @default(cuid())
-  userId    String   @db.Uuid   // matches your User.id type
-  courseId  String
-  date      DateTime @default(now())
-  score     Int
-  notes     String?
-  createdAt DateTime @default(now())
-
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  strokes   Stroke[]
-
-  @@index([userId], name: "round_user_idx")
-  @@index([courseId], name: "round_course_idx")
-}
-
-model Stroke {
-  id       String  @id @default(cuid())
-  holeId   String
-  roundId  String
-  strokes  Int
-
-  hole     Hole   @relation(fields: [holeId], references: [id], onDelete: Cascade)
-  round    Round  @relation(fields: [roundId], references: [id], onDelete: Cascade)
-
-  /// Prevent duplicate entry for the same hole in the same round
-  @@unique([holeId, roundId], name: "unique_stroke_per_hole_round")
 }
 
 
