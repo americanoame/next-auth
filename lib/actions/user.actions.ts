@@ -5,7 +5,6 @@ import { signIn, signOut } from '@/auth'; //Imports signIn and signOut methods f
 import { isRedirectError } from 'next/dist/client/components/redirect-error'; // Imports isRedirectError to check if an error requires a redirect
 import { hashSync } from 'bcrypt-ts-edge'; // Imports hashSync to hash passwords for security
 import { prisma } from '@/db/prisma';  // Imports Prisma ORM for interacting with the database
-import { formatError } from '../utils';
 
 
 // Sign in the user with credentials
@@ -87,12 +86,6 @@ export async function signUp(prevState: unknown, formData: FormData) {
     // Returns a success message if the user is registered successfully
     return { success: true, message: 'User registered successfully' };
   } catch (error) {
-    
-  //  console.log(error.name);
-  //  console.log(error.code);
-  //  console.log(error.errors);
-  //  console.log(error.meta?.target);
-
     if (isRedirectError(error)) {
       throw error; // If the error is a redirect error, it throws the error
     }
@@ -100,7 +93,7 @@ export async function signUp(prevState: unknown, formData: FormData) {
    // Returns a failure message if the registration fails
     return {
       success: false,
-      message:  formatError(error)
+      message: 'User was not registered',
     };
   }
 }
