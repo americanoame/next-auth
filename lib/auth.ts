@@ -1,33 +1,68 @@
-// /lib/auth.ts
-import CredentialsProvider from "next-auth/providers/credentials";
-import type { User } from "next-auth";
-import type { JWT } from "next-auth/jwt";
+import { compareSync } from 'bcrypt-ts-edge';
+import type { NextAuthConfig } from 'next-auth';
+import NextAuth from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
 
-export const authOptions = {
+import { prisma } from '@/db/prisma';
+import { PrismaAdapter } from '@auth/prisma-adapter';
+
+export const config = {
+  pages: {
+    signIn: '/sign-in',
+    error: '/sign-in',
+  },
+  session: {
+    strategy: 'jwt',
+    maxAge: 30 * 24 * 60 * 60,
+  },
+  adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
-      name: "Credentials",
       credentials: {
-        username: { label: "Username", type: "text" },
-        password: { label: "Password", type: "password" },
+        email: { type: 'email'},
+        password: { type: 'password' }
       },
-      async authorize() {
-        const user: User = { id: "1", name: "Test User", email: "test@example.com" };
-        return user || null;
+      async authorize(credentials) {
+        if (credentials == null) return null;
+
+        // Find user in database
+        const user = await prisma.user.findFirst({
+          where: {
+            email: credentials.email as string,
+          },
+        });
+        // Check if user exists and password is correct
+        if (user && user.password) {
+          const isMatch = compareSync(
+            credentials.password as string,
+            user.password
+          );
+          // If password is correct, return user object
+          if (isMatch) {
+            return {
+              id: user.id,
+              name: user.name,
+              email: user.email,
+              role: user.role,
+            };
+          }
+        }
+        // If user doesn't exist or password is incorrect, return null
+        return null;
       },
     }),
   ],
-  session: {
-    strategy: "jwt" as const, // keeps TS happy
-  },
   callbacks: {
-    async jwt({ token, user }: { token: JWT; user?: User }) {
-      if (user) token.id = user.id;
-      return token;
-    },
-    async session({ session, token }: { session: any; token: JWT }) {
-      if (token?.id) session.user.id = token.id as string;
+    async session ({ session, user, trigger, token }: any) {
+      // Set the user id on the session
+      session.user.id = token.sub;
+      // If there is an update, set the name on the session
+      if (trigger === 'update') {
+        session.user.name = user.name;
+      }
       return session;
     },
   },
-};
+} satisfies NextAuthConfig;
+
+export const { handlers, auth, signIn, signOut } = NextAuth(config);
