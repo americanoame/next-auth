@@ -17,8 +17,11 @@ export async function signInWithCredentials(prevState: unknown,
       password: formData.get('password'),
     });
 
-    // Signs in the user with the validated credentials
-    await signIn('credentials', user);
+    // Sign in and redirect to the customer page
+    await signIn('credentials', {
+      ...user,
+      redirectTo: '/customers',
+    });
 
 
     // Returns a success message if the sign-in is successful
@@ -36,11 +39,13 @@ export async function signInWithCredentials(prevState: unknown,
 
 
 
+
+
 // Defines an asynchronous function to sign out the user
 export async function SignOutUser() {
   await signOut({
     redirect: true, // Ensures that the user is redirected after signing out
-    redirectTo: '/sign-in', // Redirects to the sign-in page after sign-out
+    redirectTo: '/ ', // Redirects to the sign-in page after sign-out
   });
 }
 export default SignOutUser;
