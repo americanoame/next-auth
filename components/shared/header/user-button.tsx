@@ -9,16 +9,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SignOutUser } from "@/lib/actions/user.actions";
-import { UserIcon } from "lucide-react";
+// import { UserIcon } from "lucide-react";
 
 const UserButton = async () => {
   const session = await auth();
 
   if (!session)
     return (
-      <Button asChild>
+      <Button className="bg-gray-700" asChild>
         <Link href="/sign-in">
-          <UserIcon /> Sign In
+          {/* <UserIcon /> Log In */}
+          Log in
         </Link>
       </Button>
     );
