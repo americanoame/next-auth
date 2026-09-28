@@ -20,7 +20,7 @@ export async function signInWithCredentials(prevState: unknown,
     // Sign in and redirect to the customer page
     await signIn('credentials', {
       ...user,
-      redirectTo: '/customers',
+      redirectTo: '/customer',
     });
 
 
