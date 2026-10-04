@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { APP_NAME } from "@/lib/constants";
+// import { APP_NAME } from "@/lib/constants";
 import UserButton from "@/components/shared/header/user-button";
 import ModeToggle from "./mode-toggle";
 
@@ -32,7 +32,8 @@ const Header = () => {
           <Link href="/" className="flex items-center gap-2">
             <Globe className="h-5 w-5 text-black-500" />
             <span className="text-[15px] text-black-500 font-[500]">
-              {APP_NAME}
+              {/* {APP_NAME} */}
+              Geo&Core.ai
             </span>
           </Link>
         </div>
