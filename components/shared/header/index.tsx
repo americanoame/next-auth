@@ -8,7 +8,7 @@ import { Globe } from "lucide-react";
 
 const Header = () => {
   const navLinks = [
-    { name: "Product", href: "/product" },
+    { name: "Product", href: "/" },
     { name: "About", href: "/about" },
     { name: "Articles", href: "/articles" },
     { name: "Contact", href: "/contact" },
