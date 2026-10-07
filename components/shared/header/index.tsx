@@ -2,7 +2,7 @@ import Link from "next/link";
 
 // import { APP_NAME } from "@/lib/constants";
 import UserButton from "@/components/shared/header/user-button";
-import ModeToggle from "./mode-toggle";
+// import ModeToggle from "./mode-toggle";
 
 import { Globe } from "lucide-react";
 
@@ -20,7 +20,7 @@ const Header = () => {
         {/* Top-Right Controls for Mobile */}
         <div className="flex items-center justify-end gap-3 w-full shrink-0 md:hidden">
           <div className="shrink-0 flex items-center">
-            <ModeToggle />
+            {/* <ModeToggle /> */}
           </div>
           <div className="shrink-0 flex items-center scale-75 origin-right">
             <UserButton />
@@ -53,7 +53,7 @@ const Header = () => {
 
         {/* Desktop Actions */}
         <div className="hidden md:flex items-center gap-3 shrink-0">
-          <ModeToggle />
+          {/* <ModeToggle /> */}
           <div className="scale-64 origin-right">
             <UserButton />
           </div>
